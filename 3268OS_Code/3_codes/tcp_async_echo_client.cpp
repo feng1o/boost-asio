@@ -1,14 +1,14 @@
-#ifdef WIN32
+#ifndef WIN32
 #define _WIN32_WINNT 0x0501
 #include <stdio.h>
 #endif
-
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include "iostream"
 using namespace boost::asio;
 io_service service;
 
@@ -16,11 +16,11 @@ io_service service;
 #define MEM_FN1(x,y)    boost::bind(&self_type::x, shared_from_this(),y)
 #define MEM_FN2(x,y,z)  boost::bind(&self_type::x, shared_from_this(),y,z)
 
-class talk_to_svr : public boost::enable_shared_from_this<talk_to_svr>
-                  , boost::noncopyable {
+class talk_to_svr : public boost::enable_shared_from_this<talk_to_svr> , boost::noncopyable
+{
     typedef talk_to_svr self_type;
-    talk_to_svr(const std::string & message) 
-      : sock_(service), started_(true), message_(message) {}
+    talk_to_svr(const std::string & message) : sock_(service), started_(true), message_(message) {}
+
     void start(ip::tcp::endpoint ep) {
         sock_.async_connect(ep, MEM_FN1(on_connect,_1));
     }

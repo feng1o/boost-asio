@@ -4,6 +4,7 @@
 #endif
 
 
+#include "iostream"
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
@@ -82,7 +83,7 @@ private:
     void write(const std::string & msg) {
         sock_.write_some(buffer(msg));
     }
-    size_t read_complete(const boost::system::error_code & err, size_t bytes) {
+    size_t read_complete(const boost::system::error_code & err, size_t bytes) { //_complete来保证我们能读到换行符（ ’\n’） 
         if ( err) return 0;
         already_read_ = bytes;
         bool found = std::find(buff_, buff_ + bytes, '\n') < buff_ + bytes;
@@ -114,7 +115,7 @@ void run_client(const std::string & client_name) {
 int main(int argc, char* argv[]) {
     boost::thread_group threads;
     char* names[] = { "John", "James", "Lucy", "Tracy", "Frank", "Abby", 0 };
-    for ( char ** name = names; *name; ++name) {
+    for ( char ** name = names; *name; ++name) {  //
         threads.create_thread( boost::bind(run_client, *name));
         boost::this_thread::sleep( boost::posix_time::millisec(100));
     }
