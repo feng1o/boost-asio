@@ -1,5 +1,8 @@
 #ignored
-*
-!*.cpp
-!*.h
-!.gitignore
+#*
+#!*.cpp
+#!*.h
+#!.gitignore
+*.out
+*.o
+
